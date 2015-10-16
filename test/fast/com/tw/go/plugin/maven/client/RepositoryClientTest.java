@@ -11,6 +11,7 @@ import org.junit.Test;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +20,42 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class RepositoryClientTest {
+	@Test
+	public void shouldHandleNoNewerVersion() throws IOException {
+		RepositoryClient repoClient = new RepositoryClient(null);
+
+		assertThat(repoClient.noNewerVersion(new MavenVersion("1"), new MavenVersion("1")), is(true));
+		assertThat(repoClient.noNewerVersion(new MavenVersion("0"), new MavenVersion("1")), is(true));
+		assertThat(repoClient.noNewerVersion(new MavenVersion("1"), new MavenVersion("0")), is(false));
+	}
+
+	@Test
+	public void shouldHandleDatesWhenCheckingNoNewerVersion() throws IOException {
+		RepositoryClient repoClient = new RepositoryClient(null);
+
+		Calendar nowCalendar = Calendar.getInstance();
+		Date now = nowCalendar.getTime();
+
+		Calendar laterCalendar = Calendar.getInstance();
+		laterCalendar.add(Calendar.MINUTE, 1);
+		Date later = laterCalendar.getTime();
+
+		MavenVersion latest = new MavenVersion("1");
+		MavenVersion lastKnown = new MavenVersion("1");
+		
+		latest.setLastModified(now);
+		lastKnown.setLastModified(now);
+		assertThat(repoClient.noNewerVersion(latest, lastKnown), is(true));
+
+		latest.setLastModified(now);
+		lastKnown.setLastModified(later);
+		assertThat(repoClient.noNewerVersion(latest, lastKnown), is(true));
+
+		latest.setLastModified(later);
+		lastKnown.setLastModified(now);
+		assertThat(repoClient.noNewerVersion(latest, lastKnown), is(false));
+	}
+
     @Test
     public void shouldGetLatestVersion() throws IOException {
         LookupParams lookupParams = new LookupParams(

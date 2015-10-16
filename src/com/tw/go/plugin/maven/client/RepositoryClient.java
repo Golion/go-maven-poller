@@ -84,9 +84,13 @@ public class RepositoryClient {
         return null;
     }
 
-    private boolean noNewerVersion(MavenVersion latest, MavenVersion lastKnownVersion) {
-        return latest.notNewerThan(lastKnownVersion);
+    boolean noNewerVersion(MavenVersion latest, MavenVersion lastKnownVersion) {
+        return latest.notNewerThan(lastKnownVersion) && noNewerModification(latest, lastKnownVersion);
     }
+
+	private boolean noNewerModification(MavenVersion latest, MavenVersion lastKnownVersion) {
+		return ( latest.getLastModified() == null ) || ( lastKnownVersion.getLastModified() == null ) || !latest.getLastModified().after(lastKnownVersion.getLastModified());
+	}
 
     private List<MavenVersion> getAllVersions(RepoResponse repoResponse) {
         List<MavenVersion> versions;

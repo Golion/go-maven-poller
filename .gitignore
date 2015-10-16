@@ -6,3 +6,8 @@ go-plugin-api*.jar
 reports/*
 lib/*
 sdk/*
+.classpath
+.project
+bin/*
+*.class
+*.swp
