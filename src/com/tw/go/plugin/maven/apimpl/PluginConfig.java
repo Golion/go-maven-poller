@@ -47,7 +47,8 @@ public class PluginConfig implements PackageMaterialConfiguration {
             new PackageMaterialProperty(POLL_VERSION_TO).with(REQUIRED, false).with(DISPLAY_NAME, "Version to poll <").with(DISPLAY_ORDER, 4).with(PART_OF_IDENTITY, true);
 
 
-    public RepositoryConfiguration getRepositoryConfiguration() {
+    @Override
+	public RepositoryConfiguration getRepositoryConfiguration() {
         RepositoryConfiguration repoConfig = new RepositoryConfiguration();
         repoConfig.add(REPO_CONFIG_REPO_URL);
         repoConfig.add(REPO_CONFIG_USERNAME);
@@ -55,7 +56,8 @@ public class PluginConfig implements PackageMaterialConfiguration {
         return repoConfig;
     }
 
-    public PackageConfiguration getPackageConfiguration() {
+    @Override
+	public PackageConfiguration getPackageConfiguration() {
         PackageConfiguration packageConfig = new PackageConfiguration();
         packageConfig.add(PKG_CONFIG_GROUP_ID);
         packageConfig.add(PKG_CONFIG_ARTIFACT_ID);
@@ -102,7 +104,8 @@ public class PluginConfig implements PackageMaterialConfiguration {
         }
     }
 
-    public ValidationResult isPackageConfigurationValid(PackageConfiguration packageConfig, RepositoryConfiguration repoConfig) {
+    @Override
+	public ValidationResult isPackageConfigurationValid(PackageConfiguration packageConfig, RepositoryConfiguration repoConfig) {
         ValidationResult validationResult = new ValidationResult();
         MavenPackageConfig mavenPackageConfig = new MavenPackageConfig(packageConfig);
         mavenPackageConfig.validate(validationResult);

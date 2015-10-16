@@ -22,7 +22,8 @@ import static com.tw.go.plugin.maven.config.MavenPackageConfig.GROUP_ID;
 public class MavenPoller implements PackageMaterialPoller {
     private static Logger LOGGER = Logger.getLoggerFor(MavenPoller.class);
 
-    public PackageRevision getLatestRevision(PackageConfiguration packageConfig, RepositoryConfiguration repoConfig) {
+    @Override
+	public PackageRevision getLatestRevision(PackageConfiguration packageConfig, RepositoryConfiguration repoConfig) {
         LOGGER.info(String.format("getLatestRevision called with groupId %s, artifactId %s, for repo: %s",
                 packageConfig.get(GROUP_ID).getValue(),
                 packageConfig.get(ARTIFACT_ID).getValue(),
@@ -37,7 +38,8 @@ public class MavenPoller implements PackageMaterialPoller {
         return packageRevision;
     }
 
-    public PackageRevision latestModificationSince(PackageConfiguration packageConfig, RepositoryConfiguration repoConfig, PackageRevision previouslyKnownRevision) {
+    @Override
+	public PackageRevision latestModificationSince(PackageConfiguration packageConfig, RepositoryConfiguration repoConfig, PackageRevision previouslyKnownRevision) {
         LOGGER.info(String.format("latestModificationSince called with groupId %s, for repo: %s",
                 packageConfig.get(GROUP_ID).getValue(), repoConfig.get(RepoUrl.REPO_URL).getValue()));
         validateConfig(repoConfig, packageConfig);

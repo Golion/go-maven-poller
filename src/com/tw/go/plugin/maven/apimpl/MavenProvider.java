@@ -8,11 +8,13 @@ import com.thoughtworks.go.plugin.api.material.packagerepository.PackageMaterial
 @Extension
 public class MavenProvider implements PackageMaterialProvider {
 
-    public PackageMaterialConfiguration getConfig() {
+    @Override
+	public PackageMaterialConfiguration getConfig() {
         return new PluginConfig();
     }
 
-    public PackageMaterialPoller getPoller() {
+    @Override
+	public PackageMaterialPoller getPoller() {
         return new MavenPoller();
     }
 }
