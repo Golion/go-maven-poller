@@ -17,7 +17,12 @@ public class MavenVersion extends Version {
         super(ver);
     }
 
-    public String getRevisionLabel() {
+    public MavenVersion(String ver, Date lastModified) {
+    	super(ver);
+    	this.lastModified = lastModified;
+	}
+
+	public String getRevisionLabel() {
         return String.format("%s:%s.%s%s", groupId, artifactId, version, qualifierWithDelimiter(qualifier));
     }
 

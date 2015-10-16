@@ -54,7 +54,7 @@ public class RepositoryClient {
         }
         if (lookupParams.isLastVersionKnown()) {
             LOGGER.info("lastKnownVersion is "+ lookupParams.getLastKnownVersion());
-            MavenVersion lastKnownVersion = new MavenVersion(lookupParams.getLastKnownVersion());
+            MavenVersion lastKnownVersion = new MavenVersion(lookupParams.getLastKnownVersion(),lookupParams.getLastModified());
             if (noNewerVersion(latest, lastKnownVersion)) {
                 LOGGER.info("no newer version");
                 return null;
