@@ -6,6 +6,7 @@ import com.tw.go.plugin.maven.client.RepoResponse;
 import maven.MavenVersion;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class NexusResponseHandler {
@@ -49,7 +50,9 @@ public class NexusResponseHandler {
     }
 
     public String getPOMurl() {
-        return getFilesMatching(".*\\.pom$").get(0);
+    	List<String> pomFiles = getFilesMatching(".*\\.pom$");
+    	Collections.sort(pomFiles);
+        return pomFiles.get(pomFiles.size()-1);
     }
 
     public List<String> getFilesMatching(String artifactSelectionPattern) {
@@ -57,8 +60,9 @@ public class NexusResponseHandler {
             throw new RuntimeException("getFilesMatching: Invalid response");
         List<String> files = new ArrayList<String>();
         for (ContentItem ci : content.getContentItems()) {
-            if (ci.getText().matches(artifactSelectionPattern))
+            if (ci.getText().matches(artifactSelectionPattern)){
                 files.add(ci.getText());
+            }
         }
         return files;
     }

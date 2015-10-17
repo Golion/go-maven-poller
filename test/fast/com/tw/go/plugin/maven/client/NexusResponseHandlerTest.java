@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -47,5 +48,16 @@ public class NexusResponseHandlerTest {
         when(repoConnector.makeFilesRequest(lookupParams, result.getV_Q())).thenReturn(new RepoResponse(filesResponse, RepoResponse.APPLICATION_XML));
         String location = repositoryClient.getFiles(result).getArtifactLocation();
         assertThat(location, is("https://user:pass@repository.jboss.org/nexus/content/groups/public/jboss/jboss-aop/2.0.0.alpha2/jboss-aop-2.0.0.alpha2.jar"));
+    }
+
+    @Test
+    public void shouldGetGreatestPomUrlBySortOrder() throws IOException {
+    	NexusResponseHandler sut = new NexusResponseHandler(null){
+    		@Override
+    		public List<String> getFilesMatching(String artifactSelectionPattern) {
+    			return Arrays.asList("R", "W", "B");
+    		}
+    	};
+    	assertThat(sut.getPOMurl(), is("W"));
     }
 }
